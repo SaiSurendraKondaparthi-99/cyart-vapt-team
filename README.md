@@ -1,10 +1,10 @@
 # cyart-vapt-team
 
-CyArt VAPT Internship Repository
+**CyArt VAPT Internship Repository**
 
 This repository contains the work completed as part of my internship at CyArt in the domain of Vulnerability Assessment and Penetration Testing (VAPT).
 
-About the Repository
+**About the Repository**
 
 The repository is maintained to organize and document weekly internship activities, practical tasks, and learning outcomes. It includes:
 
